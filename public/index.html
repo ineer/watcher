@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="renderer" content="webkit">
+<title>test</title>
+<meta http-equiv="Cache-Control" content="no-siteapp">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
+<style>
+img {
+	width: 100%;
+}
+</style>
+<link rel="stylesheet" href="css/bootstrap.min.css">
+<link rel="stylesheet" href="css/style.css">
+<script src="js/socket.io-1.4.5.js"></script>
+</head>
+<body>
+  <!-- <img id="img" src=""> -->
+  <div id="login" class="contrainer login">
+    <h1>守望者</h1>
+    <input id="uid" class="col-sm-8 col-xs-12 col-sm-offset-2" type="text" placeholder="输入IP地址" value="192.168.0.38">
+    <input id="key" class="col-sm-8 col-xs-12 col-sm-offset-2" type="password" placeholder="输入口令" value="ineer">
+    <button id="submit" class="btn btn-lg btn-primary">验证</button>
+    <p id="login_res" class="text-danger"></p>
+  </div>
+  <div class="contrainer control">
+    <canvas id="screen"></canvas>
+    <section>
+      <h3>设置</h3>
+      <label class="col-sm-3 col-xs-6">监控屏幕<input id="booScreen" type="checkbox"></label>
+      <label class="col-sm-3 col-xs-6"><input name="screenType" type="radio" value="full" checked="checked">主屏幕</label>
+      <label class="col-sm-3 col-xs-6"><input name="screenType" type="radio" value="win">活动窗口</label>
+      <label class="col-sm-3 col-xs-6"><input name="screenType" type="radio" value="more">多屏幕</label>
+      <label class="col-xs-3" for="screenTime">fps:</label><input id="screenTime" class="col-xs-6" type="text" value="1">
+      <input id="fullscreen" class="col-xs-3" type="button" value="全屏" disabled=true>
+    </section>
+    <section>
+      <label for="cursor">鼠标</label>
+      <input id="cursor" type="checkbox">
+      <div class="cursor">
+        <button id="leftClick" class="col-xs-4">左键</button>
+        <button id="moveUp" class="col-xs-4">↑</button>
+        <button id="rightClick" class="col-xs-4">右键</button>
+        <button id="moveLeft" class="col-xs-4">←</button>
+        <button id="moveDown" class="col-xs-4">↓</button>
+        <button id="moveRight" class="col-xs-4">→</button>
+      </div>
+    </section>
+    <section id="keyboardControl">
+      <label for="keyboard">键盘</label>
+      <input id="keyboard" type="checkbox">
+      <div>
+         <button id="key_1" class="col-xs-2 col-sm-1" value="1">1</button>
+        <button id="key_2" class="col-xs-2 col-sm-1" value="2">2</button>
+        <button id="key_3" class="col-xs-2 col-sm-1" value="3">3</button>
+        <button id="key_4" class="col-xs-2 col-sm-1" value="4">4</button>
+        <button id="key_5" class="col-xs-2 col-sm-1" value="5">5</button>
+        <button id="key_6" class="col-xs-2 col-sm-1" value="6">6</button>
+        <button id="key_7" class="col-xs-2 col-sm-1" value="7">7</button>
+        <button id="key_8" class="col-xs-2 col-sm-1" value="8">8</button>
+        <button id="key_9" class="col-xs-2 col-sm-1" value="9">9</button>
+        <button id="key_0" class="col-xs-2 col-sm-1" value="0">0</button>
+        <button id="key_back" class="col-xs-4 col-sm-2" value="0x8">BackSpace</button>
+        <button id="key_tab" class="col-xs-4 col-sm-2" value="0x9">Tab</button>
+        <button id="key_q" class="col-xs-2 col-sm-1" value="q">q</button>
+        <button id="key_w" class="col-xs-2 col-sm-1" value="w">w</button>
+        <button id="key_e" class="col-xs-2 col-sm-1" value="e">e</button>
+        <button id="key_r" class="col-xs-2 col-sm-1" value="r">r</button>
+        <button id="key_t" class="col-xs-2 col-sm-1" value="t">t</button>
+        <button id="key_y" class="col-xs-2 col-sm-1" value="y">y</button>
+        <button id="key_u" class="col-xs-2 col-sm-1" value="u">u</button>
+        <button id="key_i" class="col-xs-2 col-sm-1" value="i">i</button>
+        <button id="key_o" class="col-xs-2 col-sm-1" value="o">o</button>
+        <button id="key_p" class="col-xs-2 col-sm-1" value="p">p</button>
+        <button id="key_caps" class="col-xs-4 col-sm-2" value="0x14">Caps</button>
+        <button id="key_a" class="col-xs-2 col-sm-1" value="a">a</button>
+        <button id="key_s" class="col-xs-2 col-sm-1" value="s">s</button>
+        <button id="key_d" class="col-xs-2 col-sm-1" value="d">d</button>
+        <button id="key_f" class="col-xs-2 col-sm-1" value="f">f</button>
+        <button id="key_g" class="col-xs-2 col-sm-1" value="g">g</button>
+        <button id="key_h" class="col-xs-2 col-sm-1" value="h">h</button>
+        <button id="key_j" class="col-xs-2 col-sm-1" value="j">j</button>
+        <button id="key_k" class="col-xs-2 col-sm-1" value="k">k</button>
+        <button id="key_l" class="col-xs-2 col-sm-1" value="l">l</button>
+        <button id="key_enter" class="col-xs-2  col-sm-1" value="0xD">Enter</button>
+        <button id="key_shift" class="col-xs-4 col-sm-2" value="Shift">Shift</button>
+        <button id="key_z" class="col-xs-2 col-sm-1" value="z">z</button>
+        <button id="key_x" class="col-xs-2 col-sm-1" value="x">x</button>
+        <button id="key_c" class="col-xs-2 col-sm-1" value="c">c</button>
+        <button id="key_v" class="col-xs-2 col-sm-1" value="v">v</button>
+        <button id="key_b" class="col-xs-2 col-sm-1" value="b">b</button>
+        <button id="key_n" class="col-xs-2 col-sm-1" value="n">n</button>
+        <button id="key_m" class="col-xs-2 col-sm-1" value="m">m</button>
+        <button id="key_comma" class="col-xs-2 col-sm-1" value="">,</button>
+        <button id="key_period" class="col-xs-2 col-sm-1" value="">.</button>
+        <button id="key_esc" class="col-xs-2  col-sm-1" value="0x1B">Esc</button>
+        <button id="key_ctrl" class="col-xs-2  col-sm-2" value="0x11">Ctrl</button>
+        <button id="key_other" class="col-xs-2 col-sm-1" value="0x5B">Win</button>
+        <button id="key_space" class="col-xs-4 col-sm-6" value="0x20">空格</button>
+        <button id="key_alt" class="col-xs-2  col-sm-2" value="0x11">Alt</button>
+        <button id="key_other" class="col-xs-2 col-sm-1" value="">符</button>
+        <button id="key_home" class="col-xs-4" value="0x24">Home</button>
+        <button id="key_up" class="col-xs-4" value="0x26">↑</button>
+        <button id="key_pageUp" class="col-xs-4" value="0x21">PageUp</button>
+        <button id="key_left" class="col-xs-4" value="0x25">←</button>
+        <button id="key_delete" class="col-xs-4" value="0x2E">Delete</button>
+        <button id="key_right" class="col-xs-4" value="0x27">→</button>
+        <button id="key_end" class="col-xs-4" value="0x23">End</button>
+        <button id="key_down" class="col-xs-4" value="0x28">↓</button>
+        <button id="key_pageDown" class="col-xs-4" value="0x22">PageDown</button>
+      </div>
+    </section>
+    <section>
+      <label for="tool">工具</label>
+      <input id="tool" type="checkbox">
+      <div>
+        <button id="tool_volumeUp" class="col-xs-3" value="volumeUp">音量+</button>
+        <button id="tool_volumeDown" class="col-xs-3" value="volumeDown">音量-</button>
+        <button id="tool_volumeMax" class="col-xs-3" value="volumeMax">音量1</button>
+        <button id="tool_volumeMin" class="col-xs-3" value="volumeMin">音量0</button>
+        <button id="tool_volumeMute" class="col-xs-4" value="volumeMute">静音</button>
+        <button id="tool_volumeNoMute" class="col-xs-4" value="volumeNoMute">恢复音量</button>
+        <button id="tool_volumeToggleMute" class="col-xs-4" value="volumeToggleMute">切换静音</button>
+        <button id="tool_screensaver" class="col-xs-12" value="screensaver">启动屏保</button>
+        <button id="tool_showIcon" class="col-xs-3" value="showIcon">显图标</button>
+        <button id="tool_hideIcon" class="col-xs-3" value="hideIcon">隐图标</button>
+        <button id="tool_showWin" class="col-xs-3" value="showWin">显示WIN</button>
+        <button id="tool_hideWin" class="col-xs-3" value="hideWin">隐藏WIN</button>
+        <button id="tool_dlgYes" class="col-xs-2" value="dlgYes">Yes</button>
+        <button id="tool_dlgNo" class="col-xs-2" value="dlgNo">No</button>
+        <button id="tool_dlgOk" class="col-xs-2" value="dlgOk">Ok</button>
+        <button id="tool_dlgCancel" class="col-xs-3" value="dlgCancel">Cancel</button>
+        <button id="tool_dlgClose" class="col-xs-3" value="dlgClose">Close</button>
+        <button id="tool_maxForm" class="col-xs-3" value="maxForm">最大化</button>
+        <button id="tool_minForm" class="col-xs-3" value="minForm">最小化</button>
+        <button id="tool_showForm" class="col-xs-3" value="showForm">显示</button>
+        <button id="tool_hideForm" class="col-xs-3" value="hideForm">隐藏</button>
+        <button id="tool_normalForm" class="col-xs-3" value="normalForm">还原</button>
+        <button id="tool_centerForm" class="col-xs-3" value="centerForm">居中</button>
+        <button id="tool_redrawForm" class="col-xs-3" value="redrawForm">刷新</button>
+        <button id="tool_closeForm" class="col-xs-3" value="closeForm">关闭</button>
+      </div>
+    </section>
+  </div>
+  <script src="js/jquery.min.js"></script>
+  <script src="js/bootstrap.min.js"></script>
+  <script src="js/script.js"></script>
+</body>
+</html>

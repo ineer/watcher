@@ -1,0 +1,62 @@
+@charset "UTF-8";
+
+body {
+  font-family: sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #111;
+}
+
+.login {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  text-align: center;
+  color: #3c3;
+  background-color: #000;
+  z-index: 1000;
+}
+.login h1 {
+  margin-top: 10rem;
+  margin-bottom: 3rem;
+}
+.login input{
+  height: 4rem;
+  line-height: 4rem;
+  font-size: 2rem;
+}
+.login button,
+.login p {
+  margin-top: 2rem;
+  font-size: 2rem;
+}
+
+.control {
+  font-size: 2rem;
+  line-height: 2rem;
+  color: #ccc;
+}
+.control canvas {
+  display: none;
+  width: 100%;
+}
+.control section input,
+.control section button {
+  color: #000;
+}
+.control section button {
+  padding: .5rem;
+}
+
+.control section label + input[type="checkbox"] {
+  margin-left: .5rem;
+}
+
+input[type="checkbox"] + div {
+  display: none;
+}
+input[type="checkbox"]:checked + div {
+  display: block;
+}
