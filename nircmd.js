@@ -1,9 +1,9 @@
 var exec = require('child_process').exec;
 
 var nircmd = {
-	 SCREENSHOT: 'nircmd savescreenshot "public/img/screenshot.png"' // 截取主屏幕
-	,SCREENSHOTFULL: 'nircmd savescreenshotfull "public/img/screenshot.png"' // 截取所有屏幕
-	,SCREENSHOTWIN: 'nircmd savescreenshotwin "public/img/screenshot.png"' // 截取当前活动窗口
+	 SCREENSHOT: 'nircmd savescreenshot "public/img/screenshot.jpg"' // 截取主屏幕
+	,SCREENSHOTFULL: 'nircmd savescreenshotfull "public/img/screenshot.jpg"' // 截取所有屏幕
+	,SCREENSHOTWIN: 'nircmd savescreenshotwin "public/img/screenshot.jpg"' // 截取当前活动窗口
 	,VOLUME_UP: 'nircmd.exe changesysvolume 2000' // 增加音量
 	,VOLUME_DOWN: 'nircmd.exe changesysvolume -2000' // 降低音量
 	,VOLUME_MIN: 'nircmd.exe setsysvolume 0' // 最小音量
@@ -24,6 +24,12 @@ var nircmd = {
 	,MOUSE_LEFT_DBLCLICK: 'nircmd.exe sendmouse left dblclick'
 	,MOUSE_MID_DBLCLICK: 'nircmd.exe sendmouse middle dblclick'
 	,MOUSE_RIGHT_DBLCLICK: 'nircmd.exe sendmouse right dblclick'
+	,MOUSE_LEFT_DOWN: 'nircmd.exe sendmouse left down'
+	,MOUSE_MID_DOWN: 'nircmd.exe sendmouse middle down'
+	,MOUSE_RIGHT_DOWN: 'nircmd.exe sendmouse right down'
+	,MOUSE_LEFT_UP: 'nircmd.exe sendmouse left up'
+	,MOUSE_MID_UP: 'nircmd.exe sendmouse middle up'
+	,MOUSE_RIGHT_UP: 'nircmd.exe sendmouse right up'
 	,MOUSE_MOVE: 'nircmd.exe sendmouse move '
 	,MOUSE_WHEEL: 'nircmd.exe sendmouse wheel '
 	,SET_MOUSE: 'nircmd.exe setcursor ' // 设置鼠标相对与系统的位置
@@ -35,7 +41,7 @@ var nircmd = {
 	,DLG_NO: 'nircmd.exe dlg "" "" click no'
 	,DLG_OK: 'nircmd.exe dlg "" "" click ok'
 	,DLG_CANCEL: 'nircmd.exe dlg "" "" click cancel'
-    ,DLG_CLOSE: 'nircmd.exe dlg "" "" click close'
+  ,DLG_CLOSE: 'nircmd.exe dlg "" "" click close'
 	,CLOSE_FOREGROUND: 'nircmd.exe win close foreground'
 	,SHOW_FOREGROUND: 'nircmd.exe win show foreground'
 	,HIDE_FOREGROUND: 'nircmd.exe win hide foreground'

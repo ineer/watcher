@@ -2,26 +2,33 @@ var express = require('express');
 var app = express();
 var port = process.env.PORT || 8080;
 var io = require('socket.io').listen(app.listen(port));
-var fs = require("fs");
 var nircmd = require('./nircmd.js');
 const secret = 'ineer';
-var imageBuf = '';
-var oldImageBuf = fs.readFileSync("./public/img/screenshot.png")[1000];
-
+var clientIpList = {};
 app.use(express.static(__dirname + '/public'));
 
 io.on('connection', function(socket) {
-  
+
   socket.on('load', function(data) {
-    console.log('一个匿名正在尝试连接');
+    console.log(socket.handshake.address + '正在尝试连接');
     if (data.key === secret) {
-      console.log('匿名连接成功');
+      console.log(socket.handshake.address + '连接成功');
+      clientIpList[socket.handshake.address] = [true, new Date()];
     } else {
-      console.log('匿名口令错误');
+      console.log(socket.handshake.address + '口令错误');
+      clientIpList[socket.handshake.address] = [false, new Date()];
     }
     socket.emit('access', {
       access: (data.key === secret ? 'ok': 'no')
     });
+    console.log(clientIpList);
+  });
+
+  // 有连接断开
+  socket.on('disconnect', function (data) {
+    console.log(socket.handshake.address + '断开连接');
+    clientIpList[socket.handshake.address] = [false, new Date()];
+    console.log(clientIpList);
   });
 
   socket.on('nircmd', function(data) {
@@ -29,33 +36,21 @@ io.on('connection', function(socket) {
       switch (data.method) {
         case 'screenshot':
           nircmd.exe(nircmd.SCREENSHOT);
-          imageBuf = fs.readFileSync("./public/img/screenshot.png")[1000];
-          if (imageBuf != oldImageBuf) {
-            socket.emit('newScreensHot', {
-              imgUrl: "/img/screenshot.png"
-            });
-            oldImageBuf = imageBuf;
-          }
+          socket.emit('newScreensHot', {
+            imgUrl: "/img/screenshot.jpg"
+          });
           break;
         case 'screenshotWin':
-          nircmd.exe(nircmd.SCREENSHOTWIN);
-          imageBuf = fs.readFileSync("./public/img/screenshot.png")[1000];
-          if (imageBuf != oldImageBuf) {
-            socket.emit('newScreensHot', {
-              imgUrl: "/img/screenshot.png"
-            });
-            oldImageBuf = imageBuf;
-          }
+          nircmd.exe(nircmd.SCREENSHOTWIN);  
+          socket.emit('newScreensHot', {
+            imgUrl: "/img/screenshot.jpg"
+          });
           break;
         case 'screenshotMore':
           nircmd.exe(nircmd.SCREENSHOTFULL);
-          imageBuf = fs.readFileSync("./public/img/screenshot.png")[1000];
-          if (imageBuf != oldImageBuf) {
-            socket.emit('newScreensHot', {
-              imgUrl: "/img/screenshot.png"
-            });
-            oldImageBuf = imageBuf;
-          }
+          socket.emit('newScreensHot', {
+            imgUrl: "/img/screenshot.jpg"
+          });
           break;
         case 'moveUp':
           nircmd.exe(nircmd.MOUSE_MOVE, '0 -5');
@@ -75,14 +70,26 @@ io.on('connection', function(socket) {
         case 'rightClick':
           nircmd.exe(nircmd.MOUSE_RIGHT_CLICK);
           break;
+        case 'leftDblClick':
+          nircmd.exe(nircmd.MOUSE_LEFT_DBLCLICK);
+          break;
+        case 'rightDblClick':
+          nircmd.exe(nircmd.MOUSE_RIGHT_DBLCLICK);
+          break;
+        case 'keyDown':
+          setKey(data.keyboard, 'down');
+          break;
         case 'keyPress':
-          keyPress(data.keyboard);
+          setKey(data.keyboard, 'press');
+          break;
+        case 'keyUp':
+          setKey(data.keyboard, 'up');
           break;
         case 'setMouse':
-          setMouse(data.left, data.top);
+          setMouse(data.move, data.type);
           break;
-        case 'setMouseWinin':
-          setMouseWin(data.left, data.top);
+        case 'setMouseWin':
+          setMouseWin(data.move, data.type);
           break;
         case 'volumeUp':
           nircmd.exe(nircmd.VOLUME_UP);
@@ -159,19 +166,37 @@ io.on('connection', function(socket) {
         case 'closeForm':
           nircmd.exe(nircmd.CLOSE_FOREGROUND);
           break;
-      }
+      };
     }
   });
 });
 
 console.log('Your presentation is running on http://localhost:' + port);
 
-function keyPress(key) {
-  nircmd.exe(nircmd.KEY, key + ' press'); 
+function setKey(key, type) {
+  nircmd.exe(nircmd.KEY, '0x' + key + ' ' + type); 
 };
-function setMouse(l, t) {
-  nircmd.exe(nircmd.SET_MOUSE, l + ' ' + t)
+function setMouse(arr, type) {
+  nircmd.exe(nircmd.SET_MOUSE, arr[0] + ' ' + arr[1]);
+  if (type === 1) {
+    nircmd.exe(nircmd.MOUSE_LEFT_CLICK);
+  } else if (type === 2) {
+    nircmd.exe(nircmd.MOUSE_LEFT_DBLCLICK);
+  } else if (type === 3) {
+    nircmd.exe(nircmd.MOUSE_LEFT_DOWN);
+  } else if (type === 4) {
+    nircmd.exe(nircmd.MOUSE_LEFT_UP);
+  }
 }
-function setMouseWin(l, t) {
-  nircmd.exe(nircmd.SET_MOUSEWIN, l + ' ' + t)
+function setMouseWin(arr, type) {
+  nircmd.exe(nircmd.SET_MOUSEWIN, arr[0] + ' ' + arr[1]);
+  if (type === 1) {
+    nircmd.exe(nircmd.MOUSE_LEFT_CLICK);
+  } else if (type === 2) {
+    nircmd.exe(nircmd.MOUSE_LEFT_DBLCLICK);
+  } else if (type === 3) {
+    nircmd.exe(nircmd.MOUSE_LEFT_DOWN);
+  } else if (type === 4) {
+    nircmd.exe(nircmd.MOUSE_LEFT_UP);
+  }
 }

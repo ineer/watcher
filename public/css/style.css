@@ -38,7 +38,7 @@ body {
   line-height: 2rem;
   color: #ccc;
 }
-.control canvas {
+.control img {
   display: none;
   width: 100%;
 }
@@ -59,4 +59,25 @@ input[type="checkbox"] + div {
 }
 input[type="checkbox"]:checked + div {
   display: block;
+}
+#connectMsg {
+  display: block;
+  position:fixed;
+  width: 15rem;
+  top: 0;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  text-align: center;
+  background-color:#333;
+  border-radius: 0 0 10% 10%;
+  z-index: 500;
+}
+.red-font {
+  color: #f00;
+  padding: 1rem 0;
+}
+.green-font {
+  color: #0f0;
+  padding: 1rem 0;
 }
